@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Valores</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="https://www.zempack.com.br/static/img/negocio/valores.png" type="image/x-icon">
+<style>
+        
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; 
+    }
+
+    .logo-image {
+        max-width: 150px;
+    }
+
+    @media screen and (min-width: 768px) {
+        .logo-container {
+                margin-left: 10%;
+        }
+        
+    }
+
+
+    @media screen and (max-width: 767px) {
+
+        #sidebar .top-logo-text-container img {
+            display: block; 
+            max-width: 100%; 
+            height: auto;   
+    
+        }
+
+        #sidebar h1, #sidebar p, #sidebar a button, #sidebar .top-logo-text-container h2 {
+            font-size: 1.25rem; 
+        }
+
+        .mencoes { 
+            margin-top: 25%;
+        }
+
+        #chatBox {
+            position: relative; 
+            z-index: 1; 
+            margin-top: 50px; 
+            margin-bottom:50px ;
+        }
+        
+        #hamburger {
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            z-index: 3000; 
+        }
+
+        #sidebar {
+            position: fixed;
+            top: 0; 
+            height: 100%; 
+            z-index: 2500; 
+        }
+
+        #sidebarContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        #messageFormContainer {
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            background: white; 
+            z-index: 9; 
+        }
+
+        #loanding_container {
+            display: none; 
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            width: auto; 
+            height: auto; 
+            padding: 20px; 
+            background-color: rgba(255, 255, 255, 0.865); 
+            border-radius: 10px; 
+            z-index: 1000; 
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+       
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+       
+    ::-webkit-scrollbar-thumb {
+        background: #0F3B67;
+        border-radius: 6px;
+    }
+       
+    ::-webkit-scrollbar-thumb:hover {
+        background: #022950;
+    }
+
+    .spinner {
+        height: 75px;
+        width: 100%;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: monospace;
+        letter-spacing: 1em;
+        color: #0F3B67;
+        filter: drop-shadow(0 0 10px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+       
+    .spinner span {
+        animation: loading6454 1.75s ease infinite;
+    }
+       
+    .spinner span:nth-child(2) {
+        animation-delay: 0.25s;
+    }
+       
+       .spinner span:nth-child(3) {
+        animation-delay: 0.5s;
+    }
+       
+    .spinner span:nth-child(4) {
+        animation-delay: 0.75s;
+    }
+       
+    .spinner span:nth-child(5) {
+        animation-delay: 1s;
+    }
+       
+    .spinner span:nth-child(6) {
+        animation-delay: 1.25s;
+    }
+       
+    .spinner span:nth-child(7) {
+        animation-delay: 1.5s;
+    }
+       
+    @keyframes loading6454 {
+        0%, 100% {
+            transform: translateY(0);
+        }
+       
+        50% {
+            transform: translateY(-10px);
+        }
+   }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row h-screen w-screen">
+ 
+    <div id="hamburger" class= "md:hidden flex items-center justify-between text-white py-4 px-6" style="background-color: #0F3B67;">
+        <button id="hamburgerBtn" class="text-white focus:outline-none">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+    </div>
+ 
+
+    
+    <div id="sidebar" class="z-10 text-white w-64 space-y-6 pl-4 pr-4 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out" style="background-color: #0F3B67;">
+        <div class="mencoes top-logo-text-container flex items-center mb-4">
+            <a href="https://institutojef.org.br/escolas/tech/" rel="next" target="_blank"><img src="../static/img/logo_jef.svg" alt="Logo" class="logo" style="width: 80px;"></a>
+            <span style="background: white; height: 30px; width: 1px; margin-left: 10px; margin-right: 10px;"></span>
+            <a href="https://gedaijef.com/" rel="next" target="_blank"><h2 class="text-start font-semibold ">GEDAI</h2></a>
+        </div>
+        <button id="closeBtn" class="absolute top-0 right-0 mt-4 mr-4 text-white focus:outline-none md:hidden">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        
+        <h1 class="text-base font-semibold">Gostaria de explorar mais sobre nossos valores?</h1>
+        <p class="text-sm text-gray-200">Para mais dúvidas, clique aqui para ajuda.</p>
+ 
+        <nav>
+            <a href="../static/pdf/humildade.pdf" rel="next" target="_blank"><button class="w-full text-center px-4 py-2 rounded-md" style="background-color: #189ECB;">HUMILDADE</button></a>
+            <a href="../static/pdf/atitude-de-dono.pdf" rel="next" target="_blank"><button class="w-full text-center px-4 py-2 mt-2 rounded-md" style="background-color: #168DBF;">ATITUDE DE DONO</button></a>
+            <a href="../static/pdf/determinação.pdf" rel="next" target="_blank"><button class="w-full text-center px-4 py-2 mt-2 rounded-md" style="background-color: #8AC468;">DETERMINAÇÃO</button></a>
+            <a href="../static/pdf/disciplina.pdf" rel="next" target="_blank"><button class="w-full text-center px-4 py-2 mt-2 rounded-md" style="background-color: #E38D38;">DISCIPLINA</button></a>
+            <a href="../static/pdf/disponibilidade.pdf" rel="next" target="_blank"><button class="w-full text-center px-4 py-2 mt-2 rounded-md" style="background-color: #E86338;">DISPONIBILIDADE</button></a>
+            <a href="../static/pdf/simplicidade.pdf" rel="next" target="_blank"><button class="w-full text-center px-4 py-2 mt-2 rounded-md" style="background-color: #41995A;">SIMPLICIDADE</button></a>
+            <a href="../static/pdf/franqueza.pdf" rel="next" target="_blank"><button class="w-full text-center px-4 py-2 mt-2 rounded-md" style="background-color: #D01F29;">FRANQUEZA</button></a>
+        </nav>
+    </div>
+ 
+
+    
+    <div id="logoContainer" class="logo-container">
+        <img src="https://www.zempack.com.br/static/img/negocio/valores.png" alt="Logo" class="logo-image">
+    </div>  
+ 
+    <div class="flex-1 flex flex-col">
+        <div id="chatBox" class="flex-1 overflow-y-auto p-4 relative">
+            <!-- Mensagem do chat aparece aqui -->
+            <p class="bg-green-400 text-white text-left rounded-lg rounded-tl-none p-2 m-2 inline-block hidden">{{ variavel_frontend }}</p>
+        </div>
+ 
+        <div id="loanding_container">
+            <div class="spinner min-h-12">
+                <span>C</span>
+                <span>A</span>
+                <span>R</span>
+                <span>R</span>
+                <span>E</span>
+                <span>G</span>
+                <span>A</span>
+                <span>N</span>
+                <span>D</span>
+                <span>O</span>
+              </div>
+        </div>
+ 
+        <div id="messageFormContainer">
+        <form id="messageForm" action="/submit" method="post" onsubmit="sendMessage(event)">
+            <div class="border-gray-200 p-6 pb-8">
+                <div class="flex items-center justify-between">
+                    <input type="text" id="messageInput" name="inputMessage" class="flex-1 p-2 rounded-l-lg border-2 border-r-0 border-gray-300" placeholder="Escreva sua mensagem aqui...">
+                    <input type="button" value="Enviar" id="sendMessageButton" class="bg-blue-100 border-2 border-blue-400 hover:bg-blue-200 text-blue-400 font-bold py-2 px-4 rounded-r-lg">
+ 
+                </div>
+            </div>
+        </form>
+    </div>
+       
+    </div>
+ 
+<script>
+
+document.getElementById("closeBtn").addEventListener("click", function() {
+    var sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("-translate-x-full");
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("loanding_container").style.display = "none";
+});
+
+function toggleSpinnerVisibility() {
+    var spinner = document.getElementById("loanding_container");
+    spinner.style.display = spinner.style.display === "none" ? "flex" : "none";
+}
+
+function disableMessageInput() {
+    document.getElementById("messageInput").disabled = true;
+    document.getElementById("sendMessageButton").disabled = true;
+}
+
+function enableMessageInput() {
+    document.getElementById("messageInput").disabled = false;
+    document.getElementById("sendMessageButton").disabled = false;
+}
+
+function sendMessage(event) {
+    event.preventDefault();
+    var inputMessage = document.getElementById("messageInput").value;
+    if (!inputMessage) {
+        return;
+    }
+
+    document.getElementById("logoContainer").style.display = "none";
+
+    disableMessageInput();
+    document.getElementById("loanding_container").style.display = "flex";
+
+    disableMessageInput();
+    document.getElementById("loanding_container").style.display = "flex";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/submit", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.responseType = 'json';
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            document.getElementById("loanding_container").style.display = "none";
+
+            enableMessageInput();
+
+            if(xhr.status == 200) {
+                addMessageToChatBox("user", inputMessage);
+
+                var resposta = xhr.response.resposta;
+                addMessageToChatBox("server", resposta);
+
+                document.getElementById("messageInput").value = "";
+            }
+        }
+    };
+
+    xhr.send("inputMessage=" + encodeURIComponent(inputMessage));
+}
+
+document.getElementById("sendMessageButton").addEventListener("click", sendMessage);
+
+document.getElementById("messageInput").addEventListener("keypress", function(event) {
+    if (event.key === "Enter" && !document.getElementById("messageInput").disabled) {
+        event.preventDefault();
+        sendMessage(event);
+    }
+});
+
+document.getElementById("hamburgerBtn").addEventListener("click", function() {
+    var sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("-translate-x-full");
+});
+
+document.getElementById("closeBtn").addEventListener("click", function() {
+    document.getElementById("sidebar").classList.add("-translate-x-full");
+});
+
+document.addEventListener("click", function(event) {
+    var sidebar = document.getElementById("sidebar");
+    var hamburgerBtn = document.getElementById("hamburgerBtn");
+    if (!sidebar.contains(event.target) && !hamburgerBtn.contains(event.target)) {
+        sidebar.classList.add("-translate-x-full");
+    }
+});
+
+document.getElementById("sidebar").addEventListener("click", function(event) {
+    event.stopPropagation();
+});
+
+function addMessageToChatBox(sender, message) {
+    var chatBox = document.getElementById("chatBox");
+    var messageDiv = document.createElement("div");
+    var messageContent = document.createElement("div");
+    messageContent.innerHTML = message.replace(/\n/g, '<br>');
+    messageDiv.appendChild(messageContent);
+
+    if (sender === "user") {
+        messageContent.className = "bg-gray-300 text-black text-right rounded-lg rounded-tr-none p-2 m-2 inline-block";
+        messageDiv.className = "text-right";
+    } else {
+        messageContent.className = "bg-gray-100 text-black text-left rounded-lg rounded-tl-none p-2 m-2 inline-block";
+        messageDiv.className = "text-left";
+    }
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+ 
+</script>
+</body>
+</html>
